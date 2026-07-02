@@ -17,6 +17,10 @@ return new class extends Migration
             $table->integer('quantity');
             $table->decimal('unit_price');
             $table->decimal('total_price');
+
+            $table->foreignId('sale_id')->constrained('bills')->onDelete('cascade');
+            $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
+
         });
     }
 

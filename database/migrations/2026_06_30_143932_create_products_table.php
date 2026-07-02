@@ -16,7 +16,10 @@ return new class extends Migration
             $table->string('product_name');
             $table->decimal('price', 8, 2);
             $table->integer('quantity');
+            $table->string('status')->default('active');
             $table->timestamps();
+            $table->foreignId('category_id')->constrained()->onDelete('cascade');    
+            $table->foreignId('supplier_id')->constrained()->onDelete('cascade');
         });
     }
 
