@@ -18,8 +18,8 @@ return new class extends Migration
             $table->integer('quantity');
             $table->string('status')->default('active');
             $table->timestamps();
-            $table->foreignId('category_id')->constrained()->onDelete('cascade');    
-            $table->foreignId('supplier_id')->constrained()->onDelete('cascade');
+            $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');    
+            $table->foreignId('supplier_id')->constrained('suppliers')->onDelete('cascade');
         });
     }
 
