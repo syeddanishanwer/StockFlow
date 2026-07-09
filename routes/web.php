@@ -8,7 +8,8 @@ Route::get('/', function () {
 })->name('login');
 
 
-Route::get('/signup', function () {
-    return view('signup');})->name('signup');
+// Route::get('/signup', function () {
+//     return view('signup');})->name('signup');
 
-Route::get('/loginmatch',[authController::class,'match']) ->name('login.match');
+Route::post('/loginmatch',[authController::class,'match']) ->name('login.match');
+
