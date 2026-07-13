@@ -10,4 +10,10 @@ class Category extends Model
         'name',
         'status',
     ];
+
+    // Relationship: A category can have many products
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
 }
