@@ -1,8 +1,9 @@
 FROM php:8.3-fpm-alpine
 
-# Install system dependencies and PHP extensions for MySQL
+# Install system dependencies, PHP extensions, and create the missing nginx directory
 RUN apk add --no-cache nginx supervisor bash shadow \
-    && docker-php-ext-install pdo pdo_mysql
+    && docker-php-ext-install pdo pdo_mysql \
+    && mkdir -p /run/nginx
 
 # Set working directory
 WORKDIR /var/www/html
@@ -10,7 +11,7 @@ WORKDIR /var/www/html
 # Copy source code
 COPY . .
 
-# COPY custom nginx configuration over the default alpine nginx site config
+# Copy custom nginx configuration directly into Alpine's default virtual host path
 COPY scripts/nginx.conf /etc/nginx/http.d/default.conf
 
 # Install Composer packages
