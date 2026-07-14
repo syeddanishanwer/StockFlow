@@ -10,6 +10,9 @@ WORKDIR /var/www/html
 # Copy source code
 COPY . .
 
+# COPY custom nginx configuration over the default alpine nginx site config
+COPY scripts/nginx.conf /etc/nginx/http.d/default.conf
+
 # Install Composer packages
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN composer install --no-dev --optimize-autoloader
