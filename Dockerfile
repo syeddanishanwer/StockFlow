@@ -23,4 +23,5 @@ RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cac
 
 EXPOSE 80
 
-CMD ["/var/www/html/scripts/00-laravel-deploy.sh"]
+CMD ["bash", "/var/www/html/scripts/00-laravel-deploy.sh"]
+
