@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\StockController;
@@ -24,11 +26,11 @@ Route::post('/add-stock', [StockController::class, 'store'])->middleware('auth')
 
 Route::get('/view-users', [UserController::class, 'index'])->name('viewusers')->middleware('auth');
 Route::get('/add-user', [UserController::class, 'create'])->name('addusers')->middleware('auth');
-Route::post('/add-user', [UserController::class, 'store'])->middleware('auth');
+Route::post('/add-user', [UserController::class, 'store'])->name('adduser.save')->middleware('auth');
 
 // For a custom logout
 Route::post('/logout', function () {
-    auth()->logout();
+    Auth::logout();
     request()->session()->invalidate();
     request()->session()->regenerateToken();
     return redirect()->route('login');

@@ -21,3 +21,4 @@ Referential Integrity: Enforced via comprehensive Primary Key (PK) and Foreign K
 Audit-Ready Logs: Automatically attributes every sale to a specific user account for strict operational tracking.
 
 
+Default Login Credentials - ID: admin@stockflow.com Password: yourpassword123
