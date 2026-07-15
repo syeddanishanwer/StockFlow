@@ -11,12 +11,12 @@ class AuthController extends Controller
     {
         // Validate input
         $credentials = $request->validate([
-            'username' => ['required'],
-            'pwd'      => ['required'],
+            'email'    => ['required', 'email'],
+            'password' => ['required'],
         ]);
 
         // Attempt login
-        if (Auth::attempt(['username' => $credentials['username'], 'password' => $credentials['pwd']])) {
+        if (Auth::attempt(['email' => $credentials['email'], 'password' => $credentials['password']])) {
             // Regenerate session to prevent fixation
             $request->session()->regenerate();
 
@@ -26,7 +26,7 @@ class AuthController extends Controller
 
         // If login fails, send back with error
         return back()->withErrors([
-            'username' => 'The provided credentials do not match our records.',
-        ])->onlyInput('username');
+            'email' => 'The provided credentials do not match our records.',
+        ])->onlyInput('email');
     }
 }
