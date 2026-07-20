@@ -12,50 +12,61 @@
     </div>
 
     <div class="row">
-        <!-- Stock Item Form -->
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">Add Stock Item</div>
                 <div class="card-body">
-                    <form>
+                    <!-- FIXED: Pointed to the proper POST saving route -->
+                    <form method="POST" action="{{ route('addstock.save') }}">
+                        @csrf
+                        
+                        <!-- Product Name -->
                         <div class="mb-3">
                             <label class="form-label">Product Name</label>
-                            <input type="text" class="form-control" name="product_name">
+                            <input type="text" class="form-control @error('product_name') is-invalid @enderror" name="product_name" value="{{ old('product_name') }}">
+                            @error('product_name') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         </div>
+
+                        <!-- Category Dropdown Field -->
                         <div class="mb-3">
                             <label class="form-label">Category</label>
-                            <input type="text" class="form-control" name="category">
+                            <select class="form-select @error('category_id') is-invalid @enderror" name="category_id">
+                                <option value="">Select Category</option>
+                                @foreach($categories as $category)
+                                    <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                                @endforeach
+                            </select>
+                            @error('category_id') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">SKU / Barcode</label>
-                            <input type="text" class="form-control" name="sku">
-                        </div>
+
+                        <!-- Supplier Dropdown Field -->
                         <div class="mb-3">
                             <label class="form-label">Supplier</label>
-                            <input type="text" class="form-control" name="supplier">
+                            <select class="form-select @error('supplier_id') is-invalid @enderror" name="supplier_id">
+                                <option value="">Select Supplier</option>
+                                @foreach($suppliers as $supplier)
+                                    <option value="{{ $supplier->id }}" {{ old('supplier_id') == $supplier->id ? 'selected' : '' }}>{{ $supplier->company_name }}</option>
+                                @endforeach
+                            </select>
+                            @error('supplier_id') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         </div>
+
+                        <!-- Quantity in Stock -->
                         <div class="mb-3">
                             <label class="form-label">Quantity in Stock</label>
-                            <input type="number" class="form-control" name="quantity">
+                            <input type="number" class="form-control @error('quantity') is-invalid @enderror" name="quantity" value="{{ old('quantity') }}" min="0">
+                            @error('quantity') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         </div>
+
+                        <!-- Price Field -->
                         <div class="mb-3">
-                            <label class="form-label">Reorder Level</label>
-                            <input type="number" class="form-control" name="reorder_level">
+                            <label class="form-label">Price</label>
+                            <input type="number" step="0.01" class="form-control @error('price') is-invalid @enderror" name="price" value="{{ old('price') }}" min="0">
+                            @error('price') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         </div>
+
                         <button type="submit" class="btn btn-primary">Save Item</button>
                     </form>
-                </div>
-            </div>
-        </div>
-
-        <!-- Guidelines Panel -->
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-header">Stock Guidelines</div>
-                <div class="card-body">
-                    <p><strong>Track Inventory:</strong> Monitor stock levels to prevent shortages.</p>
-                    <p><strong>Set Reorder Points:</strong> Configure alerts for low stock items.</p>
-                    <p><strong>Supplier Management:</strong> Keep supplier details updated for quick reorders.</p>
                 </div>
             </div>
         </div>

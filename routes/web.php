@@ -8,30 +8,40 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\UserController;
 
-
-// Login page (GET)
+// Guest Routes (Publicly Accessible)
 Route::get('/', function () {
     return view('welcome');
 })->name('login');
 
-// Login form submission (POST)
 Route::post('/loginmatch', [AuthController::class, 'match'])->name('login.match');
 
-// Dashboard (GET) – safe to refresh
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
 
-Route::get('/view-stock', [StockController::class, 'index'])->name('viewstock')->middleware('auth');
-Route::get('/add-stock', [StockController::class, 'create'])->name('addstock')->middleware('auth');
-Route::post('/add-stock', [StockController::class, 'store'])->middleware('auth');
+// Protected Dashboard Routes (Requires Login)
+Route::middleware(['auth'])->group(function () {
+    
+    // Dashboard
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-Route::get('/view-users', [UserController::class, 'index'])->name('viewusers')->middleware('auth');
-Route::get('/add-user', [UserController::class, 'create'])->name('addusers')->middleware('auth');
-Route::post('/add-user', [UserController::class, 'store'])->name('adduser.save')->middleware('auth');
+    // Stock / Inventory Management
+    Route::get('/view-stock', [StockController::class, 'index'])->name('viewstock');
+    Route::get('/add-stock', [StockController::class, 'create'])->name('addstock');
+    Route::post('/add-stock', [StockController::class, 'store'])->name('addstock.save');
 
-// For a custom logout
-Route::post('/logout', function () {
-    Auth::logout();
-    request()->session()->invalidate();
-    request()->session()->regenerateToken();
-    return redirect()->route('login');
-})->name('logout')->middleware('auth');
+    // User Management
+    Route::get('/view-users', [UserController::class, 'index'])->name('viewusers');
+    Route::get('/add-user', [UserController::class, 'create'])->name('addusers');
+    Route::post('/add-user', [UserController::class, 'store'])->name('adduser.save');
+
+    // Supplier Management Architecture
+    Route::get('/view-suppliers', [SupplierController::class, 'index'])->name('viewsuppliers');
+    Route::get('/add-supplier', [SupplierController::class, 'create'])->name('addsupplier');
+    Route::post('/add-supplier', [SupplierController::class, 'store'])->name('addsupplier.save');
+
+    // Authentication Termination
+    Route::post('/logout', function () {
+        Auth::logout();
+        request()->session()->invalidate();
+        request()->session()->regenerateToken();
+        return redirect()->route('login');
+    })->name('logout');
+});

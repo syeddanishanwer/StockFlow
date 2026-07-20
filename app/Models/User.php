@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Bill;  // ✅ Add this
+use App\Models\Bill;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -12,6 +12,7 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+    // FIXED: Adjusted to match the exact migration columns
     protected $fillable = [
         'first_name',
         'last_name',
@@ -19,10 +20,7 @@ class User extends Authenticatable
         'phone',
         'password',
         'role',
-        'team',
-        'notes',
         'status',
-        'email_verified_at',
     ];
 
     protected $hidden = [
@@ -33,22 +31,21 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
         ];
     }
 
-    // Relationship: A user can have many bills
     public function bills()
     {
         return $this->hasMany(Bill::class);
     }
 
-    public function getFullNameAttribute()
+    // FIXED: Changed from split first/last name to the single table column
+    public function getNameAttribute($value)
     {
-        return $this->first_name . ' ' . $this->last_name;
+        return $value;
     }
 
     public function isAdmin()
