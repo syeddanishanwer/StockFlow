@@ -32,11 +32,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/view-users', [UserController::class, 'index'])->name('viewusers');
     Route::get('/add-user', [UserController::class, 'create'])->name('addusers');
     Route::post('/add-user', [UserController::class, 'store'])->name('adduser.save');
+    Route::get('/user/{id}/deactivate',[UserController::class,'deactivate'])->name('user.deactivate');
 
     // Supplier Management Architecture
     Route::get('/view-suppliers', [SupplierController::class, 'index'])->name('viewsuppliers');
     Route::get('/add-supplier', [SupplierController::class, 'create'])->name('addsupplier');
     Route::post('/add-supplier', [SupplierController::class, 'store'])->name('addsupplier.save');
+    Route::get('/supplier/{id}/deactivate',[SupplierController::class,'deactivate'])->name('supplier.deactivate');
 
     // Authentication Termination
     Route::post('/logout', function () {

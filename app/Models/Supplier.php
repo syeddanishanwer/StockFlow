@@ -10,6 +10,7 @@ class Supplier extends Model
         'supplier_name',
         'phone',
         'address',           
+        'status',
     ];
 
     // Relationship: A supplier can have many products

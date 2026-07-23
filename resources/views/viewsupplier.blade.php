@@ -49,15 +49,16 @@
                                         <a href="#" class="btn btn-outline-secondary btn-sm" title="Edit Data">
                                             <i class="bi bi-pencil"></i>
                                         </a>
-                                        <button type="button" class="btn btn-outline-danger btn-sm" title="Remove Record">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
+                                            <a href='{{ route('supplier.deactivate',$supplier->id) }}' class="btn btn-outline-danger btn-sm"
+                                                title="Deactivate Supplier" onclick="return confirm('Are you sure you want to deactivate this supplier?');">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
                                     </div>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="text-center py-5 text-muted">
+                                <td colspan="4" class="text-center py-5 text-muted">
                                     <i class="bi bi-building display-4 d-block mb-3 text-secondary"></i>
                                     No registered suppliers found in the database system layout.
                                 </td>

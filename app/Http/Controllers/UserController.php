@@ -9,7 +9,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::all();
+        $users = User::where('status', 'active')->get();
         return view('viewusers', compact('users'));
     }
 
@@ -18,25 +18,37 @@ class UserController extends Controller
         return view('category.addusers');
     }
 
-    public function store(Request $request)
-    {
-        // FIXED: Validation rules aligned strictly with the database layout
-        $validated = $request->validate([
-            'name'     => 'required|string|max:255',
-            'username' => 'required|string|max:255|unique:users,username',
-            'role'     => 'required|in:employee,admin',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
+public function store(Request $request)
+{
+    // 1. Validate using columns that actually exist in your database
+    $validated = $request->validate([
+        'first_name' => 'required|string|max:255',
+        'last_name'  => 'nullable|string|max:255',
+        'email'      => 'required|string|email|max:255|unique:users,email',
+        'role'       => 'required|in:employee,admin',
+        'password'   => 'required|string|min:8|confirmed',
+    ]);
 
-        // FIXED: Data mapping matches the migration properties
-        User::create([
-            'name'     => $validated['name'],
-            'username' => $validated['username'],
-            'role'     => $validated['role'],
-            'password' => bcrypt($validated['password']),
-            'status'   => 'active',
-        ]);
+    // 2. Create the user using your database column names
+    User::create([
+        'first_name' => $validated['first_name'],
+        'last_name'  => $validated['last_name'] ?? '',
+        'email'      => $validated['email'],
+        'role'       => $validated['role'],
+        'password'   => bcrypt($validated['password']),
+        'status'     => 'active',
+    ]);
 
-        return redirect()->route('viewusers')->with('success', 'User created successfully!');
+    return redirect()->route('viewusers')->with('success', 'User added successfully!');
+}
+
+
+    public function deactivate ($id){
+        
+    // Change the status
+    $user = User::findOrFail($id);
+    $user->status='inactive';
+    $user->save();
+    return redirect()->back()->with('success','User deactivated successfully.');  
     }
 }

@@ -29,51 +29,48 @@
                         <thead class="table-light">
                             <tr>
                                 <th class="ps-4">Name</th>
-                                <th>Username</th>
+                                <th>Email</th> <!-- FIXED: Updated label from Username to Email -->
                                 <th>Role</th>
-                                <th>Status</th>
                                 <th class="text-end pe-4">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             @forelse($users as $user)
                                 <tr>
-                                    <!-- 1. Combine first and last name columns from your database -->
+                                    <!-- Displays full name based on DB columns -->
                                     <td class="ps-4 fw-semibold">
                                         {{ $user->first_name }} {{ $user->last_name }}
                                     </td>
 
-                                    <!-- 2. Display the email address column (since username doesn't exist in your DB) -->
+                                    <!-- Displays email address -->
                                     <td>{{ $user->email }}</td>
 
                                     <td>
-                                        <span
-                                            class="badge {{ $user->role === 'admin' ? 'bg-danger-subtle text-danger' : 'bg-info-subtle text-info' }} text-capitalize px-2.5 py-1.5">
+                                        <span class="badge {{ $user->role === 'admin' ? 'bg-danger-subtle text-danger' : 'bg-info-subtle text-info' }} text-capitalize px-2.5 py-1.5">
                                             {{ $user->role }}
                                         </span>
                                     </td>
-                                    <td>
-                                        <span class="badge bg-success-subtle text-success px-2.5 py-1.5 text-capitalize">
-                                            {{ $user->status ?? 'Active' }}
-                                        </span>
-                                    </td>
+
                                     <td class="text-end pe-4">
                                         <div class="btn-group" role="group">
                                             <a href="#" class="btn btn-outline-secondary btn-sm" title="Edit User">
                                                 <i class="bi bi-pencil"></i>
                                             </a>
-                                            <button type="button" class="btn btn-outline-danger btn-sm"
-                                                title="Delete User">
+                                            <!-- FIXED: Quote formatting on route helper -->
+                                            <a href="{{ route('user.deactivate', $user->id) }}" 
+                                               class="btn btn-outline-danger btn-sm"
+                                               title="Deactivate User" 
+                                               onclick="return confirm('Are you sure you want to deactivate this user?');">
                                                 <i class="bi bi-trash"></i>
-                                            </button>
+                                            </a>
                                         </div>
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="5" class="text-center py-5 text-muted">
+                                    <td colspan="4" class="text-center py-5 text-muted">
                                         <i class="bi bi-people display-4 d-block mb-3 text-secondary"></i>
-                                        No users found in the system database.
+                                        No active users found in the system database.
                                     </td>
                                 </tr>
                             @endforelse
