@@ -284,13 +284,13 @@
 
 <body>
     <div class="admin-wrapper">
-        <!-- Sidebar -->
+<!-- Sidebar -->
         <aside class="admin-sidebar" id="adminSidebar" aria-label="Main navigation">
             <div class="sidebar-header">
                 <a class="brand-mark" href="{{ route('dashboard') }}" aria-label="Dashboard">
                     <span class="brand-icon"><img src="{{ asset('images/favicon/favicon.ico') }}" alt="StockFlow Logo"
                             width="24" height="24">
-                    </span></span>
+                    </span>
                     <span class="brand-copy">
                         <span class="brand-title">StockFlow</span>
                         <span class="brand-subtitle">Inventory Management</span>
@@ -299,15 +299,38 @@
             </div>
 
             <nav class="sidebar-nav">
-                <!-- Dashboard - Using a modern dashboard icon -->
+                <!-- Dashboard -->
                 <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}"
                     href="{{ route('dashboard') }}" aria-current="page">
                     <span class="nav-icon"><i class="bi bi-grid-1x2-fill" aria-hidden="true"></i></span>
                     <span class="nav-text">Dashboard</span>
                 </a>
 
-                <!-- Stock Items - Using a box/package icon with a badge -->
-                <a class="nav-link {{ request()->routeIs('viewstock') ? 'active' : '' }}"
+                <!-- Categories -->
+                <!-- Note: Update href with route('viewcategories') once created -->
+                <a class="nav-link {{ request()->is('*categories*') ? 'active' : '' }}"
+                    href="#">
+                    <span class="nav-icon"><i class="bi bi-tags-fill" aria-hidden="true"></i></span>
+                    <span class="nav-text">Categories</span>
+                    @if (isset($categoryCount) && $categoryCount > 0)
+                        <span class="badge bg-secondary rounded-pill"
+                            style="font-size: 0.6rem; padding: 2px 8px;">{{ $categoryCount }}</span>
+                    @endif
+                </a>
+
+                <!-- Suppliers -->
+                <a class="nav-link {{ request()->routeIs('viewsuppliers') || request()->routeIs('addsupplier') ? 'active' : '' }}"
+                    href="{{ route('viewsuppliers') }}">
+                    <span class="nav-icon"><i class="bi bi-building-fill" aria-hidden="true"></i></span>
+                    <span class="nav-text">Suppliers</span>
+                    @if (isset($supplierCount) && $supplierCount > 0)
+                        <span class="badge bg-warning text-dark rounded-pill"
+                            style="font-size: 0.6rem; padding: 2px 8px;">{{ $supplierCount }}</span>
+                    @endif
+                </a>
+
+                <!-- Stock Items (Products) -->
+                <a class="nav-link {{ request()->routeIs('viewstock') || request()->routeIs('addstock') ? 'active' : '' }}"
                     href="{{ route('viewstock') }}">
                     <span class="nav-icon"><i class="bi bi-box-seam-fill" aria-hidden="true"></i></span>
                     <span class="nav-text">Stock Items</span>
@@ -317,7 +340,19 @@
                     @endif
                 </a>
 
-                <!-- Users - Using a people/team icon -->
+                <!-- Invoices & Bills -->
+                <!-- Note: Update href with route('viewbills') once created -->
+                <a class="nav-link {{ request()->is('*bills*') || request()->is('*sales*') ? 'active' : '' }}"
+                    href="#">
+                    <span class="nav-icon"><i class="bi bi-receipt" aria-hidden="true"></i></span>
+                    <span class="nav-text">Invoices & Bills</span>
+                    @if (isset($billCount) && $billCount > 0)
+                        <span class="badge bg-info text-dark rounded-pill"
+                            style="font-size: 0.6rem; padding: 2px 8px;">{{ $billCount }}</span>
+                    @endif
+                </a>
+
+                <!-- Users -->
                 <a class="nav-link {{ request()->routeIs('viewusers') || request()->routeIs('addusers') ? 'active' : '' }}"
                     href="{{ route('viewusers') }}">
                     <span class="nav-icon"><i class="bi bi-people-fill" aria-hidden="true"></i></span>
@@ -349,6 +384,7 @@
                     </button>
                 </form>
             </div>
+        </aside>
 
             <div class="sidebar-footer">
                 <span class="status-dot"></span>

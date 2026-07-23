@@ -7,6 +7,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\SupplierController; // <--- FIXED: Imported the missing Supplier controller
 
 // Guest Routes (Publicly Accessible)
 Route::get('/', function () {
