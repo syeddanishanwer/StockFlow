@@ -32,7 +32,7 @@
                     </ul>
                 </div>
             @endif
-            <form method="post" action="{{ route('login.match') }}" class="needs-validation" novalidate>
+            <form method="post" action="{{ route('login.match') }} "class="needs-validation" novalidate>
                 @csrf
                 <div class="mb-4">
                     <p class="eyebrow mb-1">Secure Access</p>
@@ -40,10 +40,10 @@
                     <p class="text-muted mb-0">Sign in to your admin workspace.</p>
                 </div>
                 <div class="mb-3"><label class="form-label" for="loginEmail">Email address</label><input
-                        class="form-control" id="loginEmail" name="email" type="email" required>
+                        class="form-control" id="loginEmail" name="username" type="email" required>
                     <div class="invalid-feedback">Enter a valid email.</div>
-                    <!-- Show error for email -->
-                    @error('email')
+                    <!-- Show error for username -->
+                    @error('username')
                         <div class="text-danger small">{{ $message }}</div>
                     @enderror
                 </div>
@@ -51,10 +51,10 @@
                     <div class="d-flex justify-content-between"><label class="form-label"
                             for="loginPassword">Password</label><a class="small fw-semibold"
                             href="forgot-password.html">Forgot?</a></div><input class="form-control" id="loginPassword"
-                        name="password" type="password" minlength="6" required>
+                        name="pwd" type="password" minlength="6" required>
                     <div class="invalid-feedback">Password must be at least 6 characters.</div>
                     <!-- Show error for password -->
-                    @error('password')
+                    @error('pwd')
                         <div class="text-danger small">{{ $message }}</div>
                     @enderror
                 </div>

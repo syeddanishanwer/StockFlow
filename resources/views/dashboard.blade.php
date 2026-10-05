@@ -16,8 +16,8 @@
         <div class="col-md-3">
             <div class="card text-center">
                 <div class="card-body">
-                    <h5>Low Stock</h5>
-                    <h2>{{ $lowStockCount }}</h2>
+                    <h5>Low product</h5>
+                    <h2>{{ $lowproductCount }}</h2>
                 </div>
             </div>
         </div>
@@ -78,13 +78,13 @@
             </div>
         </div>
 
-        <!-- Low Stock Products -->
+        <!-- Low product Products -->
         <div class="col-md-6">
             <div class="card">
-                <div class="card-header">Low Stock Products</div>
+                <div class="card-header">Low product Products</div>
                 <div class="card-body">
                     <ul class="list-group">
-                        @foreach($lowStockProducts as $product)
+                        @foreach($lowproductProducts as $product)
                             <li class="list-group-item">
                                 {{ $product->product_name }} ({{ $product->quantity }} left) - Supplier: {{ $product->supplier->supplier_name ?? 'N/A' }}
                             </li>
