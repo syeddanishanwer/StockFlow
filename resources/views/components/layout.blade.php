@@ -313,7 +313,7 @@
                     <span class="nav-text">Products</span>
                     @if ($productCount > 0)
                         <span class="badge bg-danger rounded-pill"
-                            style="font-size: 0.6rem; padding: 2px 8px;">{{ $productCount }}</span>
+                            style="font-size: 0.6rem; padding: 2px 8px;">{{ $productCount ?? 0}}</span>
                     @endif
                 </a>
 
