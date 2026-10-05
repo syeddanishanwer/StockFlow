@@ -18,8 +18,8 @@ class DashboardController extends Controller
         // 1. Total Products
         $totalProducts = Product::count();
         
-        // 2. Low Stock Items (quantity less than 10)
-        $lowStockCount = Product::where('quantity', '<', 10)->count();
+        // 2. Low product Items (quantity less than 10)
+        $lowproductCount = Product::where('quantity', '<', 10)->count();
         
         // 3. Today's Sales Total (from bills table)
         $todaySales = Bill::whereDate('sale_date', today())->sum('total_amount');
@@ -61,8 +61,8 @@ class DashboardController extends Controller
             ->take(5)
             ->get();
         
-        // 8. Low Stock Products (with supplier data)
-        $lowStockProducts = Product::with('supplier')
+        // 8. Low product Products (with supplier data)
+        $lowproductProducts = Product::with('supplier')
             ->where('quantity', '<', 10)
             ->where('status', 'active')
             ->take(5)
@@ -91,7 +91,7 @@ class DashboardController extends Controller
         
         return view('dashboard', [
             'totalProducts' => $totalProducts,
-            'lowStockCount' => $lowStockCount,
+            'lowproductCount' => $lowproductCount,
             'todaySales' => $todaySales,
             'activeUsers' => $activeUsers,
             'salesLabels' => $salesLabels,
@@ -99,7 +99,7 @@ class DashboardController extends Controller
             'categoryLabels' => $categoryLabels,
             'categoryData' => $categoryValues,
             'recentSales' => $recentBills, // Using bills as recent sales
-            'lowStockProducts' => $lowStockProducts,
+            'lowproductProducts' => $lowproductProducts,
             'topProductsLabels' => $topProductsLabels,
             'topProductsData' => $topProductsData,
         ]);

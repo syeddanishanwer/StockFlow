@@ -3,13 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 
 class UserController extends Controller
 {
     public function index()
     {
-        $users = User::where('status', 'active')->get();
+        $users = User::all();
         return view('viewusers', compact('users'));
     }
 
@@ -18,37 +20,58 @@ class UserController extends Controller
         return view('category.addusers');
     }
 
-public function store(Request $request)
-{
-    // 1. Validate using columns that actually exist in your database
-    $validated = $request->validate([
-        'first_name' => 'required|string|max:255',
-        'last_name'  => 'nullable|string|max:255',
-        'email'      => 'required|string|email|max:255|unique:users,email',
-        'role'       => 'required|in:employee,admin',
-        'password'   => 'required|string|min:8|confirmed',
-    ]);
+    public function store(Request $request)
+    {
 
-    // 2. Create the user using your database column names
-    User::create([
-        'first_name' => $validated['first_name'],
-        'last_name'  => $validated['last_name'] ?? '',
-        'email'      => $validated['email'],
-        'role'       => $validated['role'],
-        'password'   => bcrypt($validated['password']),
-        'status'     => 'active',
-    ]);
+        return redirect()->route('viewusers')->with('success', 'User created successfully!');
+    }
 
-    return redirect()->route('viewusers')->with('success', 'User added successfully!');
-}
+    //Edit data
+    public function edit($id)
+    {
+        // $user = DB::table('users')->where('id', $id)->first();
+
+        // if (!$user){
+        // abort(404, 'User not found');
+        // }
+
+        //I found a simpler alternative
+
+        $user = User::findOrFail($id);
+
+        return view('edituser', compact('user'));
+    }
 
 
-    public function deactivate ($id){
-        
-    // Change the status
-    $user = User::findOrFail($id);
-    $user->status='inactive';
-    $user->save();
-    return redirect()->back()->with('success','User deactivated successfully.');  
+    // Validate input data
+
+
+    public function update(Request $request, $id)
+    {
+        $validated = Validator::make($request->all(), [
+            'name'     => 'required|string|max:255',
+            'username' => 'required|string|max:255',
+            'phone'    => 'nullable|string|max:50',
+            'role'     => 'required|string|max:50',
+            'team'     => 'nullable|string|max:255',
+        ])->validated();
+
+        DB::table('users')->where('id', $id)->update([
+            'name' => $validated['name'],
+            'username'   => $validated['username'],
+            'phone'      => $validated['phone'] ?? null,
+            'role'       => $validated['role'],
+            'team'       => $validated['team'] ?? null,
+            'updated_at' => now(),
+        ]);
+        return redirect()->route('viewusers')->with('success', 'User updated successfully!');
+    }
+
+    //Delete user record
+
+    public function destroy($id)
+    {
+        DB::table('users')->where('id', $id)->delete();
+        return redirect()->route('viewusers')->with('success', 'User deleted successfully!');
     }
 }
