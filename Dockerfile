@@ -18,10 +18,10 @@ COPY scripts/nginx.conf /etc/nginx/http.d/default.conf
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN composer install --no-dev --optimize-autoloader
 
-# Nginx & file permission setup
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+# Nginx & file permission setup (Grant explicit read/write permissions to storage and bootstrap cache)
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
+    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
 EXPOSE 80
 
 CMD ["bash", "/var/www/html/scripts/00-laravel-deploy.sh"]
-
