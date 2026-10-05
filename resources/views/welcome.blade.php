@@ -32,7 +32,7 @@
                     </ul>
                 </div>
             @endif
-            <form method="post" action="{{ route('login.match') }} "class="needs-validation" novalidate>
+            <form method="post" action="{{ route('login.match') }}" class="needs-validation" novalidate>
                 @csrf
                 <div class="mb-4">
                     <p class="eyebrow mb-1">Secure Access</p>
