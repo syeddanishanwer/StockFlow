@@ -24,7 +24,7 @@
                         to your admin workspace.</small></span></a>
             @if ($errors->any())
                 <div class="alert alert-danger">
-                    <strong>Login failed!</strong> Please check your credentials and try again (Test).
+                    <strong>Login failed!</strong> Please check your credentials and try again.
                     <ul class="mb-0 mt-2">
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
